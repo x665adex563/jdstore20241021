@@ -5,7 +5,16 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :products
+    resources :orders do
+      member do
+        post :cancel #這裡本來用post出現報錯
+        post :ship
+        post :shipped
+        post :return
+      end
+    end
   end
+
   resources :products do
     member do
       post :add_to_cart
@@ -24,6 +33,7 @@ Rails.application.routes.draw do
     member do
       post :pay_with_creditcard
       post :pay_with_ewallet
+      post :apply_to_cancel
     end
   end
 

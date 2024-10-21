@@ -1,16 +1,20 @@
 <div class="row">
   <div class="col-md-12">
 
-    <h2> 訂單明細 </h2>
+    <h2> 訂單明細 (<%= render_order_paid_state(@order) %>) </h2>
+
+    <%= render "admin/orders/state_option", order: @order %>
 
     <table class="table table-bordered">
       <thead>
         <tr>
           <th width="80%">商品明細</th>
           <th>單價</th>
+          <th>數量</th>
         </tr>
       </thead>
       <tbody>
+
         <% @product_lists.each do |product_list| %>
           <tr>
             <td>
@@ -18,6 +22,9 @@
             </td>
             <td>
               <%= product_list.product_price %>
+            </td>
+            <td>
+              <%= product_list.quantity %>
             </td>
           </tr>
         <% end %>
@@ -27,15 +34,15 @@
 
     <div class="total clearfix">
       <span class="pull-right">
-        總計 <%= @order.total %> NTD
+        總計 <%= @order.total %> 元
       </span>
     </div>
 
-     <hr>
+    <hr>
 
-     <h2> 寄送資訊 </h2>
+    <h2> 寄送資訊 </h2>
 
-     <table class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered">
       <tbody>
         <tr>
           <td>
@@ -60,19 +67,5 @@
       </tbody>
     </table>
 
-    <div class="pull-left">
-      <% if @order.order_placed? || @order.paid? %>
-        <%= link_to("申請取消訂單", apply_to_cancel_order_path(@order.token), method: :post, class: "btn btn-info") %>
-      <% end %>
-    </div>
-
-    <% if !@order.is_paid? %>
-    <div class="group pull-right">
-      <%= link_to("信用卡付款", pay_with_creditcard_order_path(@order.token), :method => :post, :class => "btn btn-danger") %>
-      <%= link_to("電子錢包付款", pay_with_ewallet_order_path(@order.token), :method => :post, :class => "btn btn-danger") %>
-    </div>
-    <% else %>
-      <p class="text-center">此訂單已完成付款</p>
-    <% end %>
   </div>
 </div>
